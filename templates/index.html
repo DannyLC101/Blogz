@@ -7,11 +7,16 @@
             <p>No Blogs yet!!</p>
         {% else %}
             {% for b in blogs %}
-            <h2><a href='/blog'>b.title</a></h2>
-            <p>b.body</p>
+            <h2><a href='/blog'>{{b.title}}</a></h2>
+            <p>{{b.body}}</p>
             <hr>
             {% endfor %}
         {% endif %}
+    </form>
+    <form method='GET'>
+        
+        <h2 style='text-align:center;'>{{blogs.title}}</h2>
+        <p>{{blogs.body}}</p>
     </form>
 
 {% endblock %}
