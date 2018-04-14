@@ -3,6 +3,7 @@
     <h1>Add a Blog Entry</h1>
     <form method='POST'>
         <label>Title for your new blog:</label><br>
+        <input type="hidden" name="blog-id" value="{{blog.id}}">
         <input type="text" name="title">
 
         <br>

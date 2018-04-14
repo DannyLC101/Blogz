@@ -32,11 +32,16 @@ def newpost():
     else:
         return render_template('newpost.html')
 
-@app.route('/blog', methods=['GET', 'POST'])
+@app.route('/blog', methods=['GET','POST'])
 def main_blog():
     if request.method=='GET':
-        blog = Blog.query.all()
-        return render_template('index.html', blogs=blog)
+        blog_id = int(request.form['blog-id'])
+        blogs = Blog.query.get(blog_id)
+        return redirect('/blog?id='+blog_id)
+
+@app.route('/blog?id=', methods=['GET', 'POST'])
+def show_blog():
+    return render_template('blog.html')
 
 @app.route('/', methods=['POST', 'GET'])
 def index():

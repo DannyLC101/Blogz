@@ -1,22 +1,21 @@
 {% extends 'base.html' %}
 {% block content %}
 
-    <h1>Build A Blog</h1>
+    <h1 name='top' id='top'>Build A Blog</h1>
     <form method='POST'>
         {% if blogs|length==0 %}
             <p>No Blogs yet!!</p>
         {% else %}
             {% for b in blogs %}
-            <h2><a href='/blog'>{{b.title}}</a></h2>
+            <input type="hidden" name="blog-id" value="{{b.id}}">
+            <h2><a href='/blog?id={{b.id}}'>{{b.title}}</a></h2>
             <p>{{b.body}}</p>
             <hr>
             {% endfor %}
         {% endif %}
     </form>
-    <form method='GET'>
-        
-        <h2 style='text-align:center;'>{{blogs.title}}</h2>
-        <p>{{blogs.body}}</p>
-    </form>
+    <div>
+        <a href='#top'>Back to top</a>
+    </div>
 
 {% endblock %}

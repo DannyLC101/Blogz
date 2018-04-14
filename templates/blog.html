@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+    <form action='/blog' target='_self' method='GET'>
+        
+        <h2 style='text-align:center;'>{{blogs.title}}</h2>
+        <p>{{blogs.body}}</p>
+    </form>
+{% endblock %}
