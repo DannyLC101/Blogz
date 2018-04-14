@@ -19,16 +19,31 @@ class Blog(db.Model):
 
 @app.route('/newpost', methods=['GET', 'POST'])
 def newpost():
+    
+    
     if request.method=='POST':
         blog_title = request.form['title']
         blog_body = request.form['body']
-        new_blog = Blog(blog_title, blog_body)
-        db.session.add(new_blog)
-        db.session.commit()
+        if blog_title=="" and  blog_body=="":
+            error1 = "please enter the title"
+            error2 = "please enter the body"
+            return render_template('newpost.html', error1=error1, error2=error2)
+        if blog_title=="":
+            error1 = "please enter the title"
+            return render_template('newpost.html', error1=error1, body=blog_body)
+        if blog_body=="":
+            error2 = "please enter the body"
+            return render_template('newpost.html', title=blog_title, error2=error2)
+        
+        else:
 
-        blogs = Blog.query.filter_by(title=blog_title).all()
-        #blog_text = Blog.query.all()
-        return render_template('blog.html', blogs=blogs)
+            new_blog = Blog(blog_title, blog_body)
+            db.session.add(new_blog)
+            db.session.commit()
+
+            blogs = Blog.query.filter_by(title=blog_title).all()
+            #blog_text = Blog.query.all()
+            return render_template('blog.html', blogs=blogs)
     else:
         return render_template('newpost.html')
 
@@ -58,11 +73,11 @@ def main_blog():
     blogs = Blog.query.filter_by(id=blog_id)
     return render_template('blog.html', blogs=blogs)
 
-@app.route('/blog?id=', methods=['GET'])
-def blog():
-    id_blogs = request.form['blog-id']
-    blogs = Blog.query.filter_by(id=id_blogs)
-    return render_template('blog.html', blogs=blogs)
+#@app.route('/blog?id=', methods=['GET'])
+#def blog():
+#    id_blogs = request.form['blog-id']
+ #   blogs = Blog.query.filter_by(id=id_blogs)
+  #  return render_template('blog.html', blogs=blogs)
 
 
 if __name__=='__main__':
