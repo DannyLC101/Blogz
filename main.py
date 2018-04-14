@@ -32,25 +32,7 @@ def newpost():
     else:
         return render_template('newpost.html')
 
-@app.route('/blog', methods=['GET','POST'])
-def main_blog():
-    #if request.method=='POST':
-    #    blog_id = int(request.form['blog-id'])
-    #    blogs = Blog.query.get(blog_id)
-    #    return render_template('blog.html', blogs=blogs)
-    #elif request.method=='GET':
-    #    blog_id = int(request.form['blog-id'])
-    #    blogs = Blog.query.get(blog_id)
-    #    return redirect('/blog?id='+blog_id,blogs=blogs)
-    blog_id = request.args.get('title')
-    blogs = Blog.query.filter_by(id=blog_id).first()
-    return render_template('blog.html', blogs=blogs)
 
-@app.route('/blog?id=', methods=['GET', 'POST'])
-def blog():
-    id_blogs = request.args.get(blog-id)
-    blogs = Blog.request.get(id_blogs)
-    return render_template('blog.html', blogs=blogs)
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
@@ -61,6 +43,27 @@ def index():
     
     blogs = Blog.query.filter_by().all()
     return render_template('index.html', blogs=blogs)
+
+@app.route('/blog', methods=['GET'])
+def main_blog():
+    #if request.method=='POST':
+    #    blog_id = int(request.form['blog-id'])
+    #    blogs = Blog.query.get(blog_id)
+    #    return render_template('blog.html', blogs=blogs)
+    #elif request.method=='GET':
+    #    blog_id = int(request.form['blog-id'])
+    #    blogs = Blog.query.get(blog_id)
+    #    return redirect('/blog?id='+blog_id,blogs=blogs)
+    blog_id = request.args.get('id')
+    blogs = Blog.query.filter_by(id=blog_id)
+    return render_template('blog.html', blogs=blogs)
+
+@app.route('/blog?id=', methods=['GET'])
+def blog():
+    id_blogs = request.form['blog-id']
+    blogs = Blog.query.filter_by(id=id_blogs)
+    return render_template('blog.html', blogs=blogs)
+
 
 if __name__=='__main__':
     app.run()        

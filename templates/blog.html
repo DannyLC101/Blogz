@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     
-    <form action='/blog' target='_self' method='GET'>
+    <form action='/blog' target='_self' method='POST'>
         {% for b in blogs %}
         <input type="hidden" name="blog-id" value="{{b.id}}">
         <h2 style='text-align:center;'>{{b.title}}</h2>
