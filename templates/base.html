@@ -23,8 +23,17 @@
     <div>
         <a href='/'>Main Blog Page</a>&nbsp;&nbsp;&nbsp;&nbsp;
         
-        <a href='/newpost'>Add a Blog Entry</a>
+        <a href='/newpost'>Add a Blog Entry</a>&nbsp;&nbsp;&nbsp;&nbsp;
+
+        <a href='/logout'>Logout</a>
     </div>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% for category, message in messages %}
+            <li class="{{category}}">{{message}}</li>
+        {% endfor %}
+    {% endwith %}
+
     {% block content %}
     {% endblock %}
 </body>
