@@ -44,7 +44,9 @@ def login():
         if user and user.password == password:
             session['username'] = username
             flash("<'username'> Logged in")
-            return redirect('/')
+            return redirect('/newpost')
+        elif not user:
+            flash('User name does not exist','error')
         else:
             flash('User password incorrect, or does not exist', 'error')
     return render_template('login.html')
@@ -63,6 +65,35 @@ def signup():
             db.session.commit()
             session['username'] = username
             return redirect('/')
+        elif username!='' and password=='' and verify=='':
+            pass_error = 'Please enter the password'
+            verify_error = 'Please verify the password'
+            return render_template('signup.html', username=username, pass_error=pass_error, verify_error=verify_error)
+        elif existing_user and password=='' and verify=='':
+            user_error = 'User already exist'
+            pass_error = 'Please enter the password'
+            verify_error = 'Please verify the password'
+            return render_template('signup.html', user_error=user_error, pass_error=pass_error, verify_error=verify_error)
+        elif username=='' and password=='' and verify=='':
+            user_error = 'Please enter a valid user name'
+            pass_error = 'Please enter the password'
+            verify_error = 'Please verify the password'
+            return render_template('signup.html', user_error=user_error, pass_error=pass_error, verify_error=verify_error)
+        elif username=='':
+            user_error = 'Please enter a valid user name'
+            return render_template('signup.html', user_error=user_error)
+        elif password=='':
+            pass_error = 'Please enter the password'
+            return render_template('signup.html', pass_error=pass_error)
+        elif verify=='':
+            verify_error = 'Please verify the password'
+            return render_template('signup.html', verify_error=verify_error)
+        elif existing_user:
+            user_error = 'User already exist'
+            return render_template('signup.html', user_error=user_error)
+        elif password!=verify:
+            verify_error = 'Password does not match'
+            return render_template('signup.html', verify_error=verify_error)
         else:
             return "<h1>Username already exist</h1>"
     
