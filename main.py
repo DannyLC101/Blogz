@@ -53,7 +53,8 @@ def login():
             return render_template('login.html', user_error=user_error)    
         if user and user.password == password:
             session['username'] = username
-            flash("<'username'> Logged in")
+            msg = "'{0}' Logged in".format(username)
+            flash(msg)
             return redirect('/newpost')
         elif not user:
             flash('User name does not exist...Please SignUp','error')
@@ -150,7 +151,7 @@ def newpost():
             return render_template('newpost.html', title=blog_title, error2=error2)
         
         else:
-            own_id = User.query.filter_by(email=session['email']).first()
+
             new_blog = Blogz(blog_title, blog_body)
             db.session.add(new_blog)
             db.session.commit()
