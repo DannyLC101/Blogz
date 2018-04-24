@@ -135,7 +135,7 @@ def logout():
 
 @app.route('/newpost', methods=['GET', 'POST'])
 def newpost():
-        
+    owner = User.query.filter_by(username=session['username']).first()
     if request.method=='POST':
         blog_title = request.form['title']
         blog_body = request.form['body']
@@ -152,7 +152,7 @@ def newpost():
         
         else:
 
-            new_blog = Blogz(blog_title, blog_body)
+            new_blog = Blogz(blog_title, blog_body, owner)
             db.session.add(new_blog)
             db.session.commit()
 
