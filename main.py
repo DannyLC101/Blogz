@@ -41,12 +41,23 @@ def login():
         username = request.form['username']
         password = request.form['password']
         user = User.query.filter_by(username=username).first()
+        if username=='' and password=='':
+            user_error = 'Please enter a valid user name'
+            pass_error = 'Please enter the password'
+            return render_template('login.html', user_error=user_error, pass_error=pass_error)
+        if username!='' and password=='':
+            pass_error = 'Please enter the password'
+            return render_template('login.html', username=username, pass_error=pass_error)
+        if username=='' and password!='':
+            user_error = 'Please enter a valid user name'
+            return render_template('login.html', user_error=user_error)    
         if user and user.password == password:
             session['username'] = username
             flash("<'username'> Logged in")
             return redirect('/newpost')
         elif not user:
-            flash('User name does not exist','error')
+            flash('User name does not exist...Please SignUp','error')
+            return redirect('/signup')
         else:
             flash('User password incorrect, or does not exist', 'error')
     return render_template('login.html')
@@ -59,12 +70,17 @@ def signup():
         verify = request.form['verify']
 
         existing_user = User.query.filter_by(username=username).first()
+        if username=='' and password=='' and verify=='':
+            user_error = 'Please enter a valid user name'
+            pass_error = 'Please enter the password'
+            verify_error = 'Please verify the password'
+            return render_template('signup.html', user_error=user_error, pass_error=pass_error, verify_error=verify_error)
         if not existing_user:
             new_user = User(username, password)
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
-            return redirect('/')
+            return redirect('/newpost')
         elif username!='' and password=='' and verify=='':
             pass_error = 'Please enter the password'
             verify_error = 'Please verify the password'
@@ -74,20 +90,15 @@ def signup():
             pass_error = 'Please enter the password'
             verify_error = 'Please verify the password'
             return render_template('signup.html', user_error=user_error, pass_error=pass_error, verify_error=verify_error)
-        elif username=='' and password=='' and verify=='':
-            user_error = 'Please enter a valid user name'
-            pass_error = 'Please enter the password'
-            verify_error = 'Please verify the password'
-            return render_template('signup.html', user_error=user_error, pass_error=pass_error, verify_error=verify_error)
         elif username=='':
             user_error = 'Please enter a valid user name'
             return render_template('signup.html', user_error=user_error)
         elif password=='':
             pass_error = 'Please enter the password'
-            return render_template('signup.html', pass_error=pass_error)
+            return render_template('signup.html', username=username, pass_error=pass_error)
         elif verify=='':
             verify_error = 'Please verify the password'
-            return render_template('signup.html', verify_error=verify_error)
+            return render_template('signup.html', username=username, verify_error=verify_error)
         elif existing_user:
             user_error = 'User already exist'
             return render_template('signup.html', user_error=user_error)
