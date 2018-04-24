@@ -3,6 +3,12 @@
 
     <h1 name='top' id='top'>Build A Blog</h1>
     <form method='POST'>
+        {% if user|length>0 %}
+            {% for u in user %}
+            <h2><a href='/blog?id={{u.user}}'>{{u.user}}</a></h2>
+            {% endfor %}
+        {% endif %}
+
         {% if blogs|length==0 %}
             <p>No Blogs yet!!</p>
         {% else %}
