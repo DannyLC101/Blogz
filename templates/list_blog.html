@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <form method='POST'>
+        <ul>
+        
+        {% if users|length==0 %}
+            <p>No Users yet!!</p>
+        {% else %}
+            
+            {% for u in users %}
+            <li>    
+            <h3><a href='/singleUser?username={{u.username}}'>{{u.username}}</a></h3>
+            </li>
+            {% endfor %}
+        {% endif %}
+        
+        </ul>
+    </form>
+    
+{% endblock %}

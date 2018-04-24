@@ -31,7 +31,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup']
+    allowed_routes = ['login', 'signup', 'index', 'list_blog', 'base', 'main_blog', 'user_blog'] #mention function names
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -135,7 +135,10 @@ def logout():
 
 @app.route('/newpost', methods=['GET', 'POST'])
 def newpost():
+    
+
     owner = User.query.filter_by(username=session['username']).first()
+    
     if request.method=='POST':
         blog_title = request.form['title']
         blog_body = request.form['body']
@@ -161,7 +164,8 @@ def newpost():
             return render_template('blog.html', blogs=blogs)
     else:
         return render_template('newpost.html')
-
+    if owner not in session:
+        return redirect('/login')
 
 
 @app.route('/', methods=['POST', 'GET'])
@@ -170,41 +174,41 @@ def index():
      #   blog_id = request.args.get('blog-id')
      #   blogs = Blog.query.filter_by(blog_id).first()
       #  return render_template('blog.html', blogs=blogs)
-    owner = User.query.filter_by(username=session['username']).first()
+    
 
     if request.method == 'POST':
         blog_title = request.form['title']
         blog_body = request.form['body']
+        owner = User.query.filter_by(username=session['username']).first()
         new_blog = Blogz(blog_title, blog_body, owner)
         db.session.add(new_blog)
         db.session.commit()
 
         blogs = Blogz.query.filter_by(owner=owner).all()
-        return render_template('index.html', blogs=blogs)
-
+        user = User.query.filter_by(id=owner).first()
+        return render_template('index.html', blogs=blogs, user=user)
+    
     blogs = Blogz.query.filter_by().all()
-    return render_template('index.html', blogs=blogs)
+    user = User.query.all()
+    return render_template('index.html', blogs=blogs, user=user)
+
+@app.route('/list_blog', methods=['POST', 'GET'])
+def list_blog():
+    users = User.query.all()
+    return render_template('list_blog.html', users=users)
 
 @app.route('/blog', methods=['GET'])
 def main_blog():
-    #if request.method=='POST':
-    #    blog_id = int(request.form['blog-id'])
-    #    blogs = Blog.query.get(blog_id)
-    #    return render_template('blog.html', blogs=blogs)
-    #elif request.method=='GET':
-    #    blog_id = int(request.form['blog-id'])
-    #    blogs = Blog.query.get(blog_id)
-    #    return redirect('/blog?id='+blog_id,blogs=blogs)
     blog_id = request.args.get('id')
     blogs = Blogz.query.filter_by(id=blog_id)
     return render_template('blog.html', blogs=blogs)
 
-#@app.route('/blog?id=', methods=['GET'])
-#def blog():
-#    id_blogs = request.form['blog-id']
- #   blogs = Blog.query.filter_by(id=id_blogs)
-  #  return render_template('blog.html', blogs=blogs)
-
+@app.route('/singleUser', methods=['GET','POST'])
+def user_blog():
+    user_blog = request.args.get('username')
+    user = User.query.filter_by(username=user_blog).all()
+    blogs = Blogz.query.all()
+    return render_template('singleUser.html', user=user, blogs=blogs)
 
 if __name__=='__main__':
     app.run()        
