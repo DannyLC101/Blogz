@@ -175,7 +175,7 @@ def index():
      #   blogs = Blog.query.filter_by(blog_id).first()
       #  return render_template('blog.html', blogs=blogs)
     
-
+    switch = 0
     if request.method == 'POST':
         blog_title = request.form['title']
         blog_body = request.form['body']
@@ -183,14 +183,15 @@ def index():
         new_blog = Blogz(blog_title, blog_body, owner)
         db.session.add(new_blog)
         db.session.commit()
-
+        if username in session:
+            switch = 1
         blogs = Blogz.query.filter_by(owner=owner).all()
         user = User.query.filter_by(id=owner).first()
-        return render_template('index.html', blogs=blogs, user=user)
+        return render_template('index.html', blogs=blogs, user=user, switch=switch)
     
     blogs = Blogz.query.filter_by().all()
     user = User.query.all()
-    return render_template('index.html', blogs=blogs, user=user)
+    return render_template('index.html', blogs=blogs, user=user, switch=switch)
 
 @app.route('/list_blog', methods=['POST', 'GET'])
 def list_blog():

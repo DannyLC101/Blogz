@@ -3,6 +3,8 @@
     
     <h1 name='top' id='top'>All Blogs</h1>
     <form method='POST'>
+            
+
         {% if blogs|length==0 %}
             <p>No Blogs yet!!</p>
         {% else %}
@@ -18,6 +20,7 @@
             {% endfor %}
             {% endfor %}
         {% endif %}
+        
     </form>
     <div>
         <a href='#top'>Back to top</a>
