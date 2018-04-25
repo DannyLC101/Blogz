@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-
+    
     <h1 name='top' id='top'>All Blogs</h1>
     <form method='POST'>
         {% if blogs|length==0 %}
@@ -13,7 +13,7 @@
             {% for u in user %}
                 {% if b.owner_id==u.id %}
                     <input type="hidden" name="user_id" value="{{u.id}}">
-                    <p><i>written by {{u.username}}</i></p>
+                    <p><i>written by <ins>{{u.username}}</ins></i></p>
                 {% endif %}
             {% endfor %}
             {% endfor %}
