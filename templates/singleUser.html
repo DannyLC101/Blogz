@@ -13,7 +13,7 @@
                         <p>{{b.body}}</p>
                     
                         <input type="hidden" name="user_id" value="{{u.id}}">
-                        <p><i>written by <ins>{{u.username}}</ins></i></p>
+                        <p><i>written by <a href='/singleUser?username={{u.username}}'>{{u.username}}</a></i></p>
                     {% endif %}
                 {% endfor %}
                 

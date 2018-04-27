@@ -161,7 +161,9 @@ def newpost():
 
             blogs = Blogz.query.filter_by(title=blog_title).all()
             #blog_text = Blog.query.all()
-            return render_template('blog.html', blogs=blogs)
+            #blog_id = request.args.get('id')
+            #return render_template('blog.html', blogs=blogs)
+            return redirect("/blog?id=" + str(new_blog.id))
     else:
         return render_template('newpost.html')
     if owner not in session:
